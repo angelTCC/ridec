@@ -1,0 +1,120 @@
+/* =====================================================================
+   INSCRIPCION.CSS – Estilo coherente con RIdeC
+   ===================================================================== */
+
+.registration-section {
+    padding-block: 6rem 4rem; /* Espacio para el header fijo */
+    display: flex;
+    justify-content: center;
+}
+
+.form-container {
+    background: var(--app-color-surface);
+    width: 100%;
+    max-width: 700px;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--app-shadow-soft);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.form-header h1 {
+    color: var(--app-color-primary);
+    font-family: var(--app-font-heading);
+    font-size: 2rem;
+    margin-bottom: .5rem;
+}
+
+/* ---------- Elementos del Formulario ---------- */
+fieldset {
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+legend {
+    font-weight: 700;
+    color: var(--app-color-primary);
+    padding: 0 .5rem;
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+label {
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+    width: 100%;
+    padding: .8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    transition: border-color var(--app-transition-smooth);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--app-color-accent);
+    box-shadow: 0 0 0 3px rgba(var(--app-color-accent-rgb), 0.1); /* Si tienes el RGB definido */
+}
+
+/* ---------- Grid para campos cortos ---------- */
+.grid-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* ---------- Checkboxes ---------- */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: .5rem;
+}
+
+.form-consent {
+    margin-bottom: 2rem;
+    font-size: .85rem;
+    line-height: 1.4;
+}
+
+/* ---------- Botón de Envío ---------- */
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: var(--app-color-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--app-transition-smooth), transform .2s;
+}
+
+.btn-submit:hover {
+    background: var(--app-color-accent); /* O un tono más oscuro del primary */
+    transform: translateY(-2px);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    .grid-form { grid-template-columns: 1fr; }
+    .form-container { padding: 1.5rem; }
+}

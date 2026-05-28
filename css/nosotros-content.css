@@ -1,0 +1,282 @@
+/* ============================
+   RIdeC · NOSOTROS (2025) · Light-first
+   Paleta:
+   azul     rgb(40,118,161)
+   amarillo rgb(251,197,25)
+   gris     rgb(123,131,133)
+   blanco   rgb(255,255,255)
+   negro    rgb(0,0,0)
+================================ */
+
+:root {
+  /* Paleta base */
+  --ridec-blue:   40,118,161;
+  --ridec-yellow: 251,197,25;
+  --ridec-gray:   123,131,133;
+  --ridec-white:  255,255,255;
+  --ridec-black:  0,0,0;
+
+  /* Tema claro (por defecto) */
+  --bg: rgb(var(--ridec-white));                 /* fondo principal */
+  --fg: rgb(var(--ridec-black));                 /* texto principal */
+  --fg-muted: rgba(var(--ridec-black), .72);     /* texto secundario */
+  --surface: rgb(255 255 255);                   /* tarjetas */
+  --line: rgba(0,0,0,.08);                       /* bordes suaves */
+  --brand: rgb(var(--ridec-blue));
+  --accent: rgb(var(--ridec-yellow));
+  --elev: 0 8px 22px rgba(0,0,0,.08);
+
+  /* Tipografía fluida */
+  --step--1: clamp(.9rem, .86rem + .2vw, 1rem);
+  --step-0:  clamp(1rem, .98rem + .3vw, 1.125rem);
+  --step-1:  clamp(1.125rem, 1.05rem + .5vw, 1.35rem);
+  --step-2:  clamp(1.35rem, 1.18rem + .9vw, 1.75rem);
+  --step-3:  clamp(1.6rem, 1.3rem + 1.6vw, 2.25rem);
+  --step-4:  clamp(2rem, 1.6rem + 2.6vw, 3rem);
+
+  --radius: 16px;
+  --radius-lg: 22px;
+  --pad-sec: clamp(2.5rem, 3vw, 4rem);
+  --container: min(1100px, 92vw);
+}
+
+/* ======= (Opcional) Modo oscuro por clase =======
+   Agrega <body class="theme-dark"> para forzar dark.
+   Mantiene la misma estructura de tokens. */
+.theme-dark {
+  --bg: rgb(12 16 22);
+  --fg: rgb(235 239 244);
+  --fg-muted: rgba(235,239,244,.75);
+  --surface: rgb(20 26 34);
+  --line: rgba(255,255,255,.08);
+  --elev: 0 12px 34px rgba(0,0,0,.35);
+}
+
+/* ======= (Opcional) Preferencia del sistema =======
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: rgb(12 16 22);
+    --fg: rgb(235 239 244);
+    --fg-muted: rgba(235,239,244,.75);
+    --surface: rgb(20 26 34);
+    --line: rgba(255,255,255,.08);
+    --elev: 0 12px 34px rgba(0,0,0,.35);
+  }
+}
+*/
+
+/* Utilidades base (si global.css ya las define, puedes omitir) */
+.section-pad { padding-block: var(--pad-sec); }
+.container { width: var(--container); margin-inline: auto; }
+.container.narrow { width: min(900px, 92vw); }
+.section-title {
+  font-size: var(--step-3);
+  line-height: 1.15;
+  letter-spacing: .2px;
+  margin: 0 0 1rem 0;
+  color: var(--brand);
+}
+.lede {
+  font-size: var(--step-1);
+  color: var(--fg);
+  background: linear-gradient(180deg, rgba(var(--ridec-blue),.08), transparent 60%);
+  border-left: 4px solid var(--brand);
+  padding: .9rem 1rem;
+  border-radius: 10px;
+}
+
+/* Sección: About */
+.about {
+  background: var(--bg);
+  color: var(--fg);
+}
+.about p { color: var(--fg-muted); }
+
+/* Sección: ODS (patrones suaves en claro) */
+.ods {
+  background:
+    radial-gradient(80% 60% at 10% 0%, rgba(var(--ridec-blue), .05), transparent 60%),
+    radial-gradient(80% 60% at 90% 0%, rgba(var(--ridec-yellow), .07), transparent 70%),
+    var(--bg);
+  color: var(--fg);
+  border-block: 1px solid var(--line);
+}
+.ods .intro { color: var(--fg-muted); margin-bottom: 1.2rem; }
+
+.ods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.ods-card {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: .8rem;
+  align-items: start;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--elev);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  will-change: transform;
+}
+.ods-card:hover,
+.ods-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(var(--ridec-blue), .28);
+  box-shadow: 0 14px 34px rgba(40,118,161,.18);
+}
+.ods-card img {
+  inline-size: 56px;
+  block-size: 56px;
+  object-fit: contain;
+  filter: saturate(1) contrast(1.05);
+}
+.ods-card h3 {
+  margin: 0 0 .25rem 0;
+  font-size: var(--step-0);
+  color: var(--brand);
+}
+.ods-card p { margin: 0; color: var(--fg-muted); }
+
+/* Sección: Misión & Visión */
+.mission-vision {
+  background: var(--bg);
+  color: var(--fg);
+}
+.mv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.mv-block {
+  background:
+    linear-gradient(180deg, rgba(var(--ridec-yellow), .10), transparent 60%),
+    var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.1rem;
+  position: relative;
+  overflow: clip;
+}
+.mv-block h3 {
+  margin: 0 0 .4rem 0;
+  font-size: var(--step-1);
+  color: var(--brand);
+}
+.mv-block::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  opacity: .7;
+}
+
+/* Sección: Why + KPIs */
+.why { background: var(--bg); color: var(--fg); }
+.why p { color: var(--fg-muted); }
+
+.kpi {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: .75rem;
+}
+.kpi__item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: .9rem .8rem;
+  text-align: center;
+}
+.kpi__item span {
+  display: block;
+  font-size: var(--step-2);
+  font-weight: 800;
+  color: var(--brand);
+  line-height: 1.1;
+}
+.kpi__item small {
+  color: var(--fg-muted);
+  letter-spacing: .3px;
+}
+
+/* Sección: Mesa Directiva */
+.board {
+  background:
+    radial-gradient(80% 60% at 0% 100%, rgba(var(--ridec-blue), .05), transparent 60%),
+    var(--bg);
+  color: var(--fg);
+  border-top: 1px solid var(--line);
+}
+.board-grid {
+  --min: 240px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min), 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.board-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  text-align: center;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.board-card:hover,
+.board-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(var(--ridec-yellow), .35);
+  box-shadow: 0 14px 34px rgba(251,197,25,.2);
+}
+.avatar {
+  margin: 0 0 .7rem 0;
+  display: grid;
+  place-items: center;
+}
+.avatar img {
+  width: 104px;
+  height: 104px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid var(--brand);
+  outline: 3px solid rgba(var(--ridec-blue), .18);
+  background: #f7f9fb;
+}
+.board-name {
+  margin: 0;
+  font-size: var(--step-0);
+}
+.board-name a {
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s ease, color .2s ease;
+}
+.board-card:hover .board-name a,
+.board-card:focus-within .board-name a {
+  color: var(--brand);
+  border-color: rgba(var(--ridec-blue), .35);
+}
+.board-role {
+  margin: .25rem 0 0 0;
+  color: var(--fg-muted);
+  font-size: var(--step--1);
+}
+
+/* Accesibilidad: focus visible */
+:where(a, button, .ods-card, .board-card) { outline: none; }
+:where(a, button, .ods-card, .board-card):focus-visible {
+  box-shadow: 0 0 0 3px rgba(var(--ridec-yellow), .5);
+  border-color: rgba(var(--ridec-yellow), .9);
+}
+
+/* Motion safe */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

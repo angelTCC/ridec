@@ -1,66 +1,76 @@
 export default function Eventos() {
     return (
-        <div>
+        <div className="p-8 max-w-6xl mx-auto space-y-8">
 
           {/* FILTROS */}
-            <div>
-                <h3>Filtrar eventos</h3>
+            <section>
+                <h3 className="font-semibold mb-2">Filtrar eventos</h3>
 
-                <div>
-                    <label>Año:</label>
-                    <select>
-                        <option>Todos</option>
-                        <option>2024</option>
-                        <option>2023</option>
-                        <option>2022</option>
-                        <option>2021</option>
-                        <option>2020</option>
-                    </select>
-                </div>
+                <div className="flex items-center gap-4">
+                    <div className="form-group">
+                        <label className="form-label">Año:</label>
+                        <select className="form-input">
+                            <option>Todos</option>
+                            <option>2024</option>
+                            <option>2023</option>
+                            <option>2022</option>
+                            <option>2021</option>
+                            <option>2020</option>
+                        </select>
+                    </div>
 
-                <div>
-                    <button>Explorando Ciencias</button>
-                    <button>Generando Lazos</button>
+                    <div className="flex gap-2">
+                        <button className="btn btn-primary">Explorando Ciencias</button>
+                        <button className="btn btn-primary">Generando Lazos</button>
+                    </div>
                 </div>
-            </div>
+            </section>
 
             {/* SLIDER / EVENTOS */}
-            <div>
-                <h2>Eventos</h2>
+            <section>
+                <h2 className="section-title mb-4">Eventos</h2>
 
-                <div>
-                    <img src="/assets/images/bioinformatica.jpg" alt="Explorando Ciencias" />
-                    <h3>Explorando Ciencias</h3>
-                    <button>
-                        Registrarme
-                    </button>
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="card">
+                        <img className="card-img" src="/assets/images/bioinformatica.jpg" alt="Explorando Ciencias" />
+                        <div className="card-body space-y-3">
+                            <h3 className="card-title">Explorando Ciencias</h3>
+                            <button className="btn btn-primary">
+                                Registrarme
+                            </button>
+                        </div>
+                    </div>
 
-                <div>
-                    <img src="/assets/images/bioinformatica.jpg" alt="Generando Lazos" />
-                    <h3>Generando Lazos</h3>
-                    <button>
-                        Registrarme
-                    </button>
-                </div>
+                    <div className="card">
+                        <img className="card-img" src="/assets/images/bioinformatica.jpg" alt="Generando Lazos" />
+                        <div className="card-body space-y-3">
+                            <h3 className="card-title">Generando Lazos</h3>
+                            <button className="btn btn-primary">
+                                Registrarme
+                            </button>
+                        </div>
+                    </div>
 
-                <div>
-                    <img src="/assets/images/bioinformatica.jpg" alt="Próximo evento" />
-                    <h3>Próximamente…</h3>
-                    <button>
-                        Registrarme
-                    </button>
+                    <div className="card">
+                        <img className="card-img" src="/assets/images/bioinformatica.jpg" alt="Próximo evento" />
+                        <div className="card-body space-y-3">
+                            <h3 className="card-title">Próximamente…</h3>
+                            <button className="btn btn-primary">
+                                Registrarme
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
             {/* EVENTOS PASADOS */}
-            <div>
-                <h3>Eventos pasados</h3>
+            <section>
+                <h3 className="section-title">Eventos pasados</h3>
 
                 <div>
-                    <p>Aquí irán los eventos...</p>
+                    <p className="text-muted mt-2">Aquí irán los eventos...</p>
                 </div>
-            </div>
+            </section>
 
         </div>
     );

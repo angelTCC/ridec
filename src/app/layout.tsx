@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.css";
 
 import Link from "next/link";
 
@@ -17,13 +17,13 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <nav>
-          <h1>Navbar</h1>
-          <ul>
-            <li><Link href={'/'}>Inicio</Link></li>
-            <li><Link href={'/nosotros'}>Nosotros</Link></li>
-            <li><Link href={'/eventos'}>Eventos</Link></li>
-            <li><Link href={'/oportunidades'}>Oportunidades</Link></li>
+        <nav className="nav">
+          <h1 className="font-bold text-lg">RIdeC</h1>
+          <ul className="flex gap-4">
+            <li><Link className="nav-link" href={'/'}>Inicio</Link></li>
+            <li><Link className="nav-link" href={'/nosotros'}>Nosotros</Link></li>
+            <li><Link className="nav-link" href={'/eventos'}>Eventos</Link></li>
+            <li><Link className="nav-link" href={'/oportunidades'}>Oportunidades</Link></li>
           </ul>
         </nav>
 
