@@ -75,57 +75,64 @@ export default function FormularioContacto() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+    <form onSubmit={handleSubmit} className="contact-form">
       {exito && (
-        <div className="rounded bg-green-100 p-3 text-green-800 text-sm">
+        <div className="contact-form__success">
           Mensaje enviado correctamente. Gracias por contactarnos.
         </div>
       )}
 
       <div className="form-group">
-        <label className="form-label" htmlFor="nombre">Nombre</label>
+        <label className="form-label form-label--light" htmlFor="contact-nombre">Nombre</label>
         <input
-          id="nombre"
-          className="form-input"
+          id="contact-nombre"
+          className="form-input form-input--dark"
           type="text"
+          placeholder="Tu nombre"
           value={form.nombre}
           onChange={(e) => setForm({ ...form, nombre: e.target.value })}
         />
         {errores.nombre && (
-          <p className="mt-1 text-sm text-red-600">{errores.nombre}</p>
+          <p className="contact-form__error">{errores.nombre}</p>
         )}
       </div>
 
       <div className="form-group">
-        <label className="form-label" htmlFor="email">Correo electrónico</label>
+        <label className="form-label form-label--light" htmlFor="contact-email">Correo electrónico</label>
         <input
-          id="email"
-          className="form-input"
+          id="contact-email"
+          className="form-input form-input--dark"
           type="email"
+          placeholder="tu@email.com"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
         {errores.email && (
-          <p className="mt-1 text-sm text-red-600">{errores.email}</p>
+          <p className="contact-form__error">{errores.email}</p>
         )}
       </div>
 
       <div className="form-group">
-        <label className="form-label" htmlFor="mensaje">Mensaje</label>
+        <label className="form-label form-label--light" htmlFor="contact-mensaje">Mensaje</label>
         <textarea
-          id="mensaje"
-          className="form-textarea"
+          id="contact-mensaje"
+          className="form-textarea form-input--dark"
           rows={4}
+          placeholder="¿En qué podemos ayudarte?"
           value={form.mensaje}
           onChange={(e) => setForm({ ...form, mensaje: e.target.value })}
         />
         {errores.mensaje && (
-          <p className="mt-1 text-sm text-red-600">{errores.mensaje}</p>
+          <p className="contact-form__error">{errores.mensaje}</p>
         )}
       </div>
 
-      <button className="btn btn-primary" type="submit" disabled={loading}>
-        {loading ? "Enviando..." : "Enviar mensaje"}
+      <button
+        className="btn btn--primary contact-form__submit"
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? "Enviando..." : "Enviar mensaje →"}
       </button>
     </form>
   );

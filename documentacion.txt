@@ -1,0 +1,409 @@
+================================================================================
+  RIdeC - DOCUMENTACION DEL PROYECTO
+  Red Iberoamericana de Ciencias
+  Última actualización: Julio 2026
+================================================================================
+
+
+1. DESCRIPCIÓN GENERAL
+───────────────────────
+
+RIdeC es una red iberoamericana de estudiantes y profesionales dedicada a
+impulsar las ciencias básicas (Física, Matemática, Química, Biología),
+reducir la deserción universitaria y generar comunidad científica.
+
+Stack tecnológico:
+  - Next.js 16 (App Router)
+  - React 19 + TypeScript
+  - Tailwind CSS 4
+  - Motion (Framer Motion) para animaciones
+  - Prisma 6 + SQLite para base de datos
+
+
+2. ESTRUCTURA DEL PROYECTO
+────────────────────────────
+
+  src/
+  ├── app/
+  │   ├── layout.tsx              Layout raíz (nav + metadata + fonts)
+  │   ├── page.tsx                Página principal (compone secciones)
+  │   ├── nosotros/page.tsx       Página "Nosotros"
+  │   ├── eventos/page.tsx        Página "Eventos"
+  │   ├── oportunidades/page.tsx  Página "Oportunidades"
+  │   └── api/contacto/route.js   API endpoint de contacto
+  │
+  ├── components/
+  │   ├── ui/                     ← Componentes UI reutilizables
+  │   │   ├── Button.tsx          Botón con variantes (primary/secondary/outline/ghost)
+  │   │   ├── SectionHeader.tsx   Título + subtítulo de sección
+  │   │   ├── StatCard.tsx        Tarjeta de estadística (número + label)
+  │   │   ├── FeatureCard.tsx     Tarjeta de feature (icono + título + texto + link)
+  │   │   ├── EventCard.tsx       Tarjeta de evento (imagen + tag + fecha + título)
+  │   │   ├── OdsCard.tsx         Tarjeta de ODS (imagen + título + texto)
+  │   │   ├── Slider.tsx          Carrusel horizontal con flechas
+  │   │   └── CTASection.tsx      Bloque CTA con gradiente y botones
+  │   │
+  │   ├── sections/               ← Secciones de página (componen ui/)
+  │   │   ├── HeroSection.tsx     Hero con fondo de red animada
+  │   │   ├── StatsSection.tsx    Fila de 4 estadísticas
+  │   │   ├── FeaturesSection.tsx "Qué hacemos" - 3 cards
+  │   │   ├── EventsSection.tsx   Slider de eventos próximos
+  │   │   ├── OdsSection.tsx      Alineación con ODS
+  │   │   ├── JoinSection.tsx     CTA "Únete a la red"
+  │   │   └── ContactSection.tsx  Formulario de contacto
+  │   │
+  │   ├── NetworkBackground.tsx   Fondo SVG animado (mapa mundial + red)
+  │   ├── contacto.tsx            Wrapper de sección de contacto
+  │   └── formulario.tsx          Formulario con validación
+  │
+  └── styles/
+      ├── theme.css               Tokens centralizados (colores, fonts, spacing)
+      ├── globals.css             Importa theme + tailwind + components
+      └── components.css          Estilos de todos los componentes
+
+
+3. SISTEMA DE DISEÑO (DESIGN TOKENS)
+─────────────────────────────────────
+
+Todos los estilos están centralizados en src/styles/theme.css.
+Para cambiar el aspecto del sitio, edita este archivo.
+
+3.1 Colores
+
+  Variable                  Valor       Uso
+  ─────────────────────────────────────────────────────
+  --c-primary               #0d2c4f     Azul oscuro principal (nav, títulos)
+  --c-secondary             #005a9c     Azul medio (links, acentos)
+  --c-accent                #ff6b6b     Coral (botones de acción)
+  --c-accent-hover          #e05252     Coral hover
+  --c-bg                    #f7f9fc     Fondo claro de secciones
+  --c-surface               #ffffff     Fondo de cards
+  --c-dark                  #060b18     Fondo oscuro (hero)
+  --c-dark-surface          #1e293b     Superficies en dark theme
+  --c-text                  #333333     Texto principal
+  --c-text-secondary        #6c757d     Texto secundario
+  --c-text-muted            #94a3b8     Texto deshabilitado
+  --c-text-inverse          #ffffff     Texto sobre fondos oscuros
+  --c-cyan                  #22d3ee     Acento cyan (red animada)
+  --c-cyan-dim              rgba(...)   Cyan con opacidad baja
+  --c-border                #e0e0e0     Bordes claros
+  --c-border-light          rgba(...)   Bordes sobre fondos oscuros
+
+3.2 Tipografía
+
+  Variable                  Valor
+  ─────────────────────────────────
+  --font-heading            'Poppins', sans-serif
+  --font-body               'Inter', sans-serif
+
+  Tamaños: --fs-xs (0.75rem) hasta --fs-hero (3rem)
+  Pesos: --fw-normal (400) hasta --fw-extrabold (800)
+
+3.3 Espaciado
+
+  Variable                  Valor
+  ─────────────────────────────────
+  --sp-xs                   0.5rem
+  --sp-sm                   1rem
+  --sp-md                   1.5rem
+  --sp-lg                   2rem
+  --sp-xl                   3rem
+  --sp-2xl                  4rem
+
+3.4 Bordes redondeados
+
+  Variable                  Valor
+  ─────────────────────────────────
+  --radius-sm               8px
+  --radius-md               12px
+  --radius-lg               16px
+  --radius-xl               20px
+  --radius-full             9999px
+
+3.5 Sombras
+
+  Variable                  Valor
+  ─────────────────────────────────
+  --shadow-sm               0 2px 8px rgba(0,0,0,0.06)
+  --shadow-md               0 4px 16px rgba(0,0,0,0.1)
+  --shadow-lg               0 8px 32px rgba(0,0,0,0.12)
+
+3.6 Transiciones
+
+  Variable                  Valor
+  ─────────────────────────────────
+  --ease-out                cubic-bezier(0.25, 1, 0.5, 1)
+  --duration-fast           0.2s
+  --duration-normal         0.3s
+  --duration-slow           0.5s
+
+
+4. COMPONENTES UI REUTILIZABLES
+────────────────────────────────
+
+4.1 Button
+
+  Props:
+    variant: "primary" | "secondary" | "outline" | "outline-dark" | "ghost"
+    size: "sm" | "md" | "lg"
+    href?: string (si se provee, renderiza Link en vez de button)
+    children: ReactNode
+
+  Ejemplo:
+    <Button href="/eventos" variant="primary" size="lg">
+      Ver eventos
+    </Button>
+
+4.2 SectionHeader
+
+  Props:
+    title: string
+    subtitle?: string
+
+  Ejemplo:
+    <SectionHeader
+      title="¿Qué hacemos?"
+      subtitle="Comunidades, mentorías e investigación"
+    />
+
+4.3 StatCard
+
+  Props:
+    number: string
+    label: string
+
+  Ejemplo:
+    <StatCard number="82.7%" label="Tasa de deserción en Física" />
+
+4.4 FeatureCard
+
+  Props:
+    icon: string (emoji o texto)
+    title: string
+    text: string
+    href: string
+
+  Ejemplo:
+    <FeatureCard
+      icon="🔬"
+      title="Comunidades"
+      text="Grupos de estudio..."
+      href="/nosotros"
+    />
+
+4.5 EventCard
+
+  Props:
+    tag: "ec" | "gl" (Explorando Ciencias / Generando Lazos)
+    tagLabel: string
+    date: string
+    title: string
+    text: string
+    img: string (ruta de imagen)
+
+  Ejemplo:
+    <EventCard
+      tag="ec"
+      tagLabel="Explorando Ciencias"
+      date="15 Ago 2025"
+      title="Taller: Física Cuántica"
+      text="Una inmersión práctica..."
+      img="/images/bioinformatica.jpg"
+    />
+
+4.6 OdsCard
+
+  Props:
+    img: string (ruta de imagen ODS)
+    title: string
+    text: string
+
+  Ejemplo:
+    <OdsCard
+      img="/images/ODS4.png"
+      title="Educación"
+      text="Programas abiertos..."
+    />
+
+4.7 Slider
+
+  Props:
+    children: ReactNode (EventCards u otros)
+    visibleCount?: number (default: 3)
+
+  Ejemplo:
+    <Slider visibleCount={3}>
+      {events.map(ev => <EventCard key={ev.title} {...ev} />)}
+    </Slider>
+
+4.8 CTASection
+
+  Props:
+    title: string
+    text: string
+    primaryBtn: { label: string; href: string }
+    secondaryBtn?: { label: string; href: string }
+
+  Ejemplo:
+    <CTASection
+      title="Únete a la red"
+      text="Forma parte de una comunidad..."
+      primaryBtn={{ label: "Ver oportunidades", href: "/oportunidades" }}
+      secondaryBtn={{ label: "Conoce más", href: "/nosotros" }}
+    />
+
+
+5. SECCIONES DE PÁGINA
+───────────────────────
+
+Las secciones componen los componentes UI y se encuentran en
+src/components/sections/. Cada sección es independiente y reutilizable.
+
+  Sección             Dependencias
+  ──────────────────────────────────────────────
+  HeroSection         NetworkBackground, Button, motion
+  StatsSection        StatCard, motion
+  FeaturesSection     SectionHeader, FeatureCard, motion
+  EventsSection       SectionHeader, Slider, EventCard, motion
+  OdsSection          SectionHeader, OdsCard, motion
+  JoinSection         CTASection, motion
+  ContactSection      SectionHeader, Contacto, motion
+
+Para agregar una nueva sección:
+  1. Crear archivo en src/components/sections/NuevaSeccion.tsx
+  2. Componer componentes UI existentes
+  3. Importar en src/app/page.tsx
+
+
+6. PÁGINA PRINCIPAL (page.tsx)
+──────────────────────────────
+
+La página principal es un compositor simple (~25 líneas) que ensambla
+todas las secciones:
+
+  HeroSection
+    ↓
+  section-light (contenedor fondo claro)
+    ├── StatsSection
+    ├── FeaturesSection
+    ├── EventsSection
+    ├── OdsSection
+    ├── JoinSection
+    └── ContactSection
+
+No contiene lógica de negocio ni datos hardcodeados.
+
+
+7. FONDO ANIMADO (NetworkBackground)
+─────────────────────────────────────
+
+Componente SVG que renderiza:
+  - 28 ciudades在全球 (Europa, Asia, África, América)
+  - 34 conexiones animadas con dots viajeros cyan
+  - 6 siluetas de continentes
+  - Pulso luminoso en cada nodo
+
+Coordenadas: proyección equirectangular
+  x = (lng + 180) / 360 * 1000
+  y = (90 - lat) / 180 * 500
+
+Para agregar una ciudad:
+  1. Agregar objeto al array 'cities' con name, lat, lng, region
+  2. Agregar conexiones al array 'connections' con índices [from, to]
+  3. Verificar que los índices no excedan la longitud del array
+
+
+8. FORMULARIO DE CONTACTO
+──────────────────────────
+
+  Componente: formulario.tsx
+  Endpoint: POST /api/contacto
+  Base de datos: SQLite via Prisma
+
+  Campos: nombre (min 2), email (regex), mensaje (min 10)
+  Estados: formulario → cargando → éxito/error
+
+  Modelo Prisma (schema.prisma):
+    model Contacto {
+      id        Int      @id @default(autoincrement())
+      nombre    String
+      email     String
+      mensaje   String
+      createdAt DateTime @default(now())
+    }
+
+
+9. CÓMO CAMBIAR EL DISEÑO
+───────────────────────────
+
+9.1 Cambiar colores principales:
+  → Editar src/styles/theme.css
+  → Modificar las variables --c-primary, --c-secondary, --c-accent, etc.
+  → Todos los componentes se actualizan automáticamente
+
+9.2 Cambiar tipografía:
+  → Editar src/styles/theme.css (variables --font-heading, --font-body)
+  → Editar src/app/layout.tsx si necesitas cambiar las fuentes de Google
+
+9.3 Cambiar espaciado general:
+  → Editar src/styles/theme.css (variables --sp-xs hasta --sp-2xl)
+
+9.4 Cambiar el estilo de un componente específico:
+  → Editar src/styles/components.css
+  → Buscar la clase del componente (ej: .stat-card, .feature-card)
+
+9.5 Agregar una nueva página:
+  1. Crear directorio en src/app/nuevapagina/
+  2. Crear page.tsx dentro
+  3. Usar componentes UI y sections existentes
+
+9.6 Agregar un nuevo componente UI:
+  1. Crear archivo en src/components/ui/NuevoComponente.tsx
+  2. Agregar estilos en src/styles/components.css
+  3. Documentar props en documentacion.txt
+
+
+10. DEPENDENCIAS PRINCIPALES
+─────────────────────────────
+
+  Paquete              Versión    Uso
+  ──────────────────────────────────────────
+  next                 ^16.2.6    Framework
+  react                19.2.4     UI library
+  motion               (latest)   Animaciones
+  @prisma/client       ^6.19.3    ORM
+  prisma               ^6.19.3    DB schema
+  tailwindcss          ^4         Utility CSS
+
+
+11. COMANDOS ÚTILES
+─────────────────────
+
+  npm run dev          Iniciar servidor de desarrollo
+  npm run build        Build de producción (incluye prisma generate)
+  npm run lint         Verificar código con ESLint
+  npx tsc --noEmit     Verificar tipos TypeScript
+
+
+12. ARCHIVOS DE IMÁGENES
+─────────────────────────
+
+  public/images/
+  ├── logo.png              Logo de RIdeC
+  ├── networking.png        Imagen de networking
+  ├── bioinformatica.jpg    Imagen de bioinformática
+  ├── ODS4.png              Icono ODS 4 - Educación
+  ├── ODS5.png              Icono ODS 5 - Igualdad de género
+  ├── ODS9.png              Icono ODS 9 - Innovación
+  ├── ODS10.png             Icono ODS 10 - Igualdad
+  ├── temp-image.png        Imagen temporal
+  ├── tem-image-2.png       Imagen temporal 2
+  └── people/               Fotos del equipo
+      ├── carla-photo.png
+      ├── Jorge-Medina-photo.jpg
+      └── Camila_Suarez_Díaz-photo.jpeg
+
+
+================================================================================
+  Fin de la documentación
+================================================================================

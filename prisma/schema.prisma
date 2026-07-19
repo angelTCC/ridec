@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,10 +7,103 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ── Contacto (formularios) ──
 model Contacto {
   id        Int      @id @default(autoincrement())
   nombre    String
   email     String
   mensaje   String
   createdAt DateTime @default(now())
+}
+
+// ── Eventos ──
+model Evento {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  category    String   // "ec" | "gl"
+  tagLabel    String   // "Explorando Ciencias" | "Generando Lazos"
+  image       String
+  location    String?
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ── Oportunidades ──
+model Oportunidad {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  deadline     DateTime?
+  type         String   // "becas" | "traslados" | "congresos" | "financiamientos"
+  externalLink String?
+  image        String?
+  year         Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ── Blog / Noticias ──
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  content   String
+  author    String
+  image     String?
+  tags      String   @default("") // comma-separated
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── Stats del homepage ──
+model Stat {
+  id     Int    @id @default(autoincrement())
+  number String // "350+"
+  label  String // "Estudiantes activos"
+  order  Int    @default(0)
+}
+
+// ── Features / Qué hacemos ──
+model Feature {
+  id          Int    @id @default(autoincrement())
+  icon        String // emoji
+  title       String
+  description String
+  href        String?
+  order       Int    @default(0)
+}
+
+// ── ODS ──
+model Ods {
+  id          Int    @id @default(autoincrement())
+  number      Int    // 4, 5, 9, 10
+  title       String
+  description String
+  image       String
+  order       Int    @default(0)
+}
+
+// ── Mesa Directiva / Equipo ──
+model TeamMember {
+  id    Int    @id @default(autoincrement())
+  name  String
+  role  String
+  image String
+  order Int    @default(0)
+}
+
+// ── Usuarios ──
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  university String?
+  role       String   @default("miembro") // "admin" | "colaborador" | "miembro"
+  status     String   @default("pending") // "pending" | "approved" | "rejected"
+  createdAt  DateTime @default(now())
 }
