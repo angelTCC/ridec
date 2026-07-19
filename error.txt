@@ -1,0 +1,14 @@
+
+ GET / 500 in 453ms (next.js: 167ms, application-code: 286ms)
+[browser] Uncaught TypeError: Cannot read properties of undefined (reading 'svg')
+    at <unknown> (src/components/NetworkBackground.tsx:155:49)
+    at Array.map (<anonymous>)
+    at NetworkBackground (src/components/NetworkBackground.tsx:153:22)
+    at Home (src/app/page.tsx:125:7)
+  153 |         {connections.map(([fromIdx, toIdx], i) => {
+  154 |           const [x1, y1] = cityPositions[fromIdx].svg;
+> 155 |           const [x2, y2] = cityPositions[toIdx].svg;
+      |                                                 ^
+  156 |           const d = arcPath(x1, y1, x2, y2);
+  157 |           const duration = 4 + (i % 4) * 1.2;
+  158 |           return (
