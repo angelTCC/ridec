@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { PrismaClient, Role } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -12,7 +12,9 @@ async function main() {
   await prisma.feature.deleteMany();
   await prisma.ods.deleteMany();
   await prisma.teamMember.deleteMany();
-  await prisma.user.deleteMany();
+
+  const adminPassword = await bcrypt.hash("admin123", 10);
+  const userPassword = await bcrypt.hash("user123", 10);
 
   // ── Stats ──
   await prisma.stat.createMany({
@@ -76,8 +78,7 @@ async function main() {
       {
         number: 9,
         title: "Innovación",
-        description:
-          "Proyectos de I+D que impulsan soluciones sostenibles.",
+        description: "Proyectos de I+D que impulsan soluciones sostenibles.",
         image: "/images/ODS9.png",
         order: 3,
       },
@@ -336,39 +337,49 @@ En RIdeC tenemos comunidades activas en 15+ universidades. Encuentra la tuya.`,
     ],
   });
 
-  // ── Admin User ──
-  const adminPassword = await bcrypt.hash("admin123", 12);
-  await prisma.user.create({
-    data: {
-      name: "Administrador",
-      email: "admin@ridec.org",
+  // ── Usuarios ──
+  const admin = await prisma.user.upsert({
+    where: {
+      email: "admin@ridec.com",
+    },
+    update: {
       password: adminPassword,
-      university: "RIdeC",
-      role: "admin",
-      status: "approved",
+      role: Role.ADMIN,
+    },
+    create: {
+      name: "Administrador",
+      email: "admin@ridec.com",
+      password: adminPassword,
+      role: Role.ADMIN,
     },
   });
 
-  // ── Usuario de prueba (miembro) ──
-  const userPassword = await bcrypt.hash("usuario123", 12);
-  await prisma.user.create({
-    data: {
-      name: "Juan Pérez",
-      email: "usuario@ridec.org",
+  const user = await prisma.user.upsert({
+    where: {
+      email: "user@ridec.com",
+    },
+    update: {
       password: userPassword,
-      university: "UNMSM",
-      role: "miembro",
-      status: "approved",
+      role: Role.USER,
+    },
+    create: {
+      name: "Usuario",
+      email: "user@ridec.com",
+      password: userPassword,
+      role: Role.USER,
     },
   });
 
   console.log("Seed completado exitosamente");
+  console.log("Admin creado:", admin.email);
+  console.log("User creado:", user.email);
 }
 
 main()
-  .then(() => prisma.$disconnect())
-  .catch((e) => {
-    console.error(e);
-    prisma.$disconnect();
+  .catch((error) => {
+    console.error(error);
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });

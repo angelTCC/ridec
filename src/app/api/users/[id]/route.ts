@@ -7,10 +7,9 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const body = await request.json();
-  const { status, role } = body;
+  const { role } = body;
 
   const data: Record<string, string> = {};
-  if (status) data.status = status;
   if (role) data.role = role;
 
   const user = await prisma.user.update({
@@ -20,9 +19,7 @@ export async function PATCH(
       id: true,
       name: true,
       email: true,
-      university: true,
       role: true,
-      status: true,
     },
   });
 

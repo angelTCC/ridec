@@ -1,109 +1,118 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { registerSchema, type RegisterFormData } from "@/schemas/auth.schema";
 
 export default function RegisterForm() {
-  const [form, setForm] = useState({ name: "", email: "", password: "", university: "" });
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+  });
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    setLoading(true);
+  const onSubmit = async (data: RegisterFormData) => {
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
 
-    try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-      const data = await res.json();
+      body: JSON.stringify(data),
+    });
 
-      if (!res.ok) {
-        setError(data.error || "Error al registrar");
-        setLoading(false);
-        return;
-      }
+    const result = await response.json();
 
-      setSuccess(data.message);
-      setForm({ name: "", email: "", password: "", university: "" });
-    } catch {
-      setError("Error de conexión");
-    } finally {
-      setLoading(false);
-    }
-  }
+    console.log(result);
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
-      {error && <div className="auth-form__error">{error}</div>}
-      {success && <div className="auth-form__success">{success}</div>}
-
+    <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
       <div className="form-group">
-        <label className="form-label" htmlFor="reg-name">Nombre completo</label>
+        <label htmlFor="name" className="form-label">
+          Nombre
+        </label>
+
         <input
-          id="reg-name"
-          className="form-input"
+          id="name"
+          {...register("name")}
           type="text"
           placeholder="Tu nombre"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
+          className="form-input"
         />
+
+        {errors.name && (
+          <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+        )}
       </div>
 
       <div className="form-group">
-        <label className="form-label" htmlFor="reg-email">Email</label>
+        <label htmlFor="email" className="form-label">
+          Correo electrónico
+        </label>
+
         <input
-          id="reg-email"
-          className="form-input"
+          id="email"
+          {...register("email")}
           type="email"
           placeholder="tu@email.com"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
+          className="form-input"
         />
+
+        {errors.email && (
+          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+        )}
       </div>
 
       <div className="form-group">
-        <label className="form-label" htmlFor="reg-university">Universidad / Institución</label>
-        <input
-          id="reg-university"
-          className="form-input"
-          type="text"
-          placeholder="PUCP, UNMSM, etc."
-          value={form.university}
-          onChange={(e) => setForm({ ...form, university: e.target.value })}
-        />
-      </div>
+        <label htmlFor="password" className="form-label">
+          Contraseña
+        </label>
 
-      <div className="form-group">
-        <label className="form-label" htmlFor="reg-password">Password</label>
         <input
-          id="reg-password"
-          className="form-input"
+          id="password"
+          {...register("password")}
           type="password"
-          placeholder="Mínimo 6 caracteres"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          required
-          minLength={6}
+          placeholder="••••••••"
+          className="form-input"
         />
+
+        {errors.password && (
+          <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+        )}
       </div>
 
-      <button className="btn btn--primary auth-form__submit" type="submit" disabled={loading}>
-        {loading ? "Registrando..." : "Crear cuenta"}
-      </button>
+      <div className="form-group">
+        <label htmlFor="confirmPassword" className="form-label">
+          Confirmar contraseña
+        </label>
 
-      <p className="auth-form__alt">
-        ¿Ya tienes cuenta?{" "}
-        <Link href="/login" className="auth-form__link">Inicia sesión</Link>
-      </p>
+        <input
+          id="confirmPassword"
+          {...register("confirmPassword")}
+          type="password"
+          placeholder="••••••••"
+          className="form-input"
+        />
+
+        {errors.confirmPassword && (
+          <p className="mt-1 text-sm text-red-500">
+            {errors.confirmPassword.message}
+          </p>
+        )}
+      </div>
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="btn btn--primary auth-form__submit w-full"
+      >
+        {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
+      </button>
     </form>
   );
 }

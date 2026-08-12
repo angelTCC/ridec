@@ -1,50 +1,48 @@
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+import { registerSchema } from "@/schemas/auth.schema";
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const { name, email, password, university } = body;
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
 
-  if (!name || !email || !password) {
+    const result = registerSchema.safeParse(body);
+
+    if (!result.success) {
+      return NextResponse.json(
+        {
+          message: "Datos inválidos",
+          errors: result.error.flatten().fieldErrors,
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const data = result.data;
+
+    console.log("Usuario válido:", data);
+
     return NextResponse.json(
-      { error: "Nombre, email y password son obligatorios" },
-      { status: 400 }
+      {
+        message: "Registro recibido correctamente",
+        user: {
+          name: data.name,
+          email: data.email,
+        },
+      },
+      {
+        status: 201,
+      },
+    );
+  } catch {
+    return NextResponse.json(
+      {
+        message: "Error interno del servidor",
+      },
+      {
+        status: 500,
+      },
     );
   }
-
-  if (password.length < 6) {
-    return NextResponse.json(
-      { error: "El password debe tener al menos 6 caracteres" },
-      { status: 400 }
-    );
-  }
-
-  const exists = await prisma.user.findUnique({ where: { email } });
-  if (exists) {
-    return NextResponse.json(
-      { error: "Ya existe una cuenta con este email" },
-      { status: 409 }
-    );
-  }
-
-  const hashed = await bcrypt.hash(password, 12);
-
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashed,
-      university: university || null,
-      role: "miembro",
-      status: "pending",
-    },
-  });
-
-  return NextResponse.json(
-    {
-      message: "Registro exitoso. Tu cuenta está pendiente de aprobación por un administrador.",
-    },
-    { status: 201 }
-  );
 }
