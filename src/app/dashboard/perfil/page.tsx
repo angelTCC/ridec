@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useUser } from "@/lib/useUser";
+import { useAuth } from "@/context/AuthContext";
 
 export default function PerfilPage() {
-  const user = useUser();
+  const { user } = useAuth();
 
   if (!user) {
     return <p style={{ color: "var(--c-text-muted)" }}>Cargando...</p>;

@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import RoleGuard from "@/components/admin/RoleGuard";
 import AdminForm from "@/components/admin/AdminForm";
-import { blogFields, slugify, type AdminBlogPost, type FormData } from "@/components/admin/fields";
+import {
+  blogFields,
+  slugify,
+  type AdminBlogPost,
+  type FormData,
+} from "@/components/admin/fields";
 
 export default function BlogPage() {
   const [items, setItems] = useState<AdminBlogPost[]>([]);
@@ -22,7 +27,14 @@ export default function BlogPage() {
 
   function openCreate() {
     setShowForm("create");
-    setFormValues({ title: "", content: "", author: "", image: "", tags: "", published: false });
+    setFormValues({
+      title: "",
+      content: "",
+      author: "",
+      image: "",
+      tags: "",
+      published: false,
+    });
   }
 
   function openEdit(item: AdminBlogPost) {
@@ -33,7 +45,8 @@ export default function BlogPage() {
   function handleChange(name: string, value: string | boolean | number) {
     setFormValues((prev) => {
       const next = { ...prev, [name]: value };
-      if (name === "title" && showForm === "create") next.slug = slugify(String(value));
+      if (name === "title" && showForm === "create")
+        next.slug = slugify(String(value));
       return next;
     });
   }
@@ -42,7 +55,11 @@ export default function BlogPage() {
     const isEdit = typeof showForm === "number";
     const url = isEdit ? `/api/blog/${showForm}` : "/api/blog";
     const method = isEdit ? "PUT" : "POST";
-    await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(formValues) });
+    await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formValues),
+    });
     setShowForm(null);
     setFormValues({});
     fetchData();
@@ -55,25 +72,34 @@ export default function BlogPage() {
   }
 
   return (
-    <RoleGuard allowed={["admin", "colaborador"]}>
+    <RoleGuard allowed={["ADMIN", "USER"]}>
       <div className="admin-header">
         <div>
           <h1 className="admin-header__title">Gestión de Blog</h1>
-          <p className="admin-header__subtitle">Administra las publicaciones del blog</p>
+          <p className="admin-header__subtitle">
+            Administra las publicaciones del blog
+          </p>
         </div>
         <div className="admin-header__actions">
-          <button className="btn btn--primary btn--sm" onClick={openCreate}>+ Crear publicación</button>
+          <button className="btn btn--primary btn--sm" onClick={openCreate}>
+            + Crear publicación
+          </button>
         </div>
       </div>
 
       {showForm !== null && (
         <AdminForm
-          title={showForm === "create" ? "Crear publicación" : "Editar publicación"}
+          title={
+            showForm === "create" ? "Crear publicación" : "Editar publicación"
+          }
           fields={blogFields}
           values={formValues}
           onChange={handleChange}
           onSave={handleSave}
-          onCancel={() => { setShowForm(null); setFormValues({}); }}
+          onCancel={() => {
+            setShowForm(null);
+            setFormValues({});
+          }}
         />
       )}
 
@@ -96,14 +122,42 @@ export default function BlogPage() {
           <tbody>
             {items.map((b) => (
               <tr key={b.id}>
-                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>{b.title}</td>
+                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>
+                  {b.title}
+                </td>
                 <td>{b.author}</td>
-                <td><span className={`admin-badge admin-badge--${b.published ? "approved" : "pending"}`}>{b.published ? "Publicado" : "Borrador"}</span></td>
-                <td style={{ fontFamily: "monospace", fontSize: "0.75rem", color: "var(--c-text-muted)" }}>{b.slug}</td>
+                <td>
+                  <span
+                    className={`admin-badge admin-badge--${b.published ? "approved" : "pending"}`}
+                  >
+                    {b.published ? "Publicado" : "Borrador"}
+                  </span>
+                </td>
+                <td
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "0.75rem",
+                    color: "var(--c-text-muted)",
+                  }}
+                >
+                  {b.slug}
+                </td>
                 <td>
                   <div className="admin-actions">
-                    <button className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }} onClick={() => openEdit(b)}>Editar</button>
-                    <button className="btn btn--ghost btn--sm" style={{ color: "#f87171" }} onClick={() => handleDelete(b.id)}>Eliminar</button>
+                    <button
+                      className="btn btn--ghost btn--sm"
+                      style={{ color: "var(--c-cyan)" }}
+                      onClick={() => openEdit(b)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn--ghost btn--sm"
+                      style={{ color: "#f87171" }}
+                      onClick={() => handleDelete(b.id)}
+                    >
+                      Eliminar
+                    </button>
                   </div>
                 </td>
               </tr>

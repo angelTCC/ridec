@@ -3,7 +3,11 @@
 import { useState, useEffect } from "react";
 import RoleGuard from "@/components/admin/RoleGuard";
 import AdminForm from "@/components/admin/AdminForm";
-import { eventFields, type AdminEvent, type FormData } from "@/components/admin/fields";
+import {
+  eventFields,
+  type AdminEvent,
+  type FormData,
+} from "@/components/admin/fields";
 
 export default function EventosPage() {
   const [items, setItems] = useState<AdminEvent[]>([]);
@@ -22,7 +26,16 @@ export default function EventosPage() {
 
   function openCreate() {
     setShowForm("create");
-    setFormValues({ title: "", description: "", date: "", category: "ec", tagLabel: "", image: "", location: "", featured: false });
+    setFormValues({
+      title: "",
+      description: "",
+      date: "",
+      category: "ec",
+      tagLabel: "",
+      image: "",
+      location: "",
+      featured: false,
+    });
   }
 
   function openEdit(item: AdminEvent) {
@@ -38,7 +51,11 @@ export default function EventosPage() {
     const isEdit = typeof showForm === "number";
     const url = isEdit ? `/api/eventos/${showForm}` : "/api/eventos";
     const method = isEdit ? "PUT" : "POST";
-    await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(formValues) });
+    await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formValues),
+    });
     setShowForm(null);
     setFormValues({});
     fetchData();
@@ -51,14 +68,18 @@ export default function EventosPage() {
   }
 
   return (
-    <RoleGuard allowed={["admin", "colaborador"]}>
+    <RoleGuard allowed={["ADMIN", "USER"]}>
       <div className="admin-header">
         <div>
           <h1 className="admin-header__title">Gestión de Eventos</h1>
-          <p className="admin-header__subtitle">Administra los eventos de la plataforma</p>
+          <p className="admin-header__subtitle">
+            Administra los eventos de la plataforma
+          </p>
         </div>
         <div className="admin-header__actions">
-          <button className="btn btn--primary btn--sm" onClick={openCreate}>+ Crear evento</button>
+          <button className="btn btn--primary btn--sm" onClick={openCreate}>
+            + Crear evento
+          </button>
         </div>
       </div>
 
@@ -69,7 +90,10 @@ export default function EventosPage() {
           values={formValues}
           onChange={handleChange}
           onSave={handleSave}
-          onCancel={() => { setShowForm(null); setFormValues({}); }}
+          onCancel={() => {
+            setShowForm(null);
+            setFormValues({});
+          }}
         />
       )}
 
@@ -92,14 +116,34 @@ export default function EventosPage() {
           <tbody>
             {items.map((e) => (
               <tr key={e.id}>
-                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>{e.title}</td>
+                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>
+                  {e.title}
+                </td>
                 <td>{new Date(e.date).toLocaleDateString("es-PE")}</td>
-                <td><span className={`admin-badge admin-badge--${e.category === "ec" ? "approved" : "colaborador"}`}>{e.category}</span></td>
+                <td>
+                  <span
+                    className={`admin-badge admin-badge--${e.category === "ec" ? "approved" : "colaborador"}`}
+                  >
+                    {e.category}
+                  </span>
+                </td>
                 <td>{e.featured ? "⭐" : "—"}</td>
                 <td>
                   <div className="admin-actions">
-                    <button className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }} onClick={() => openEdit(e)}>Editar</button>
-                    <button className="btn btn--ghost btn--sm" style={{ color: "#f87171" }} onClick={() => handleDelete(e.id)}>Eliminar</button>
+                    <button
+                      className="btn btn--ghost btn--sm"
+                      style={{ color: "var(--c-cyan)" }}
+                      onClick={() => openEdit(e)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn--ghost btn--sm"
+                      style={{ color: "#f87171" }}
+                      onClick={() => handleDelete(e.id)}
+                    >
+                      Eliminar
+                    </button>
                   </div>
                 </td>
               </tr>

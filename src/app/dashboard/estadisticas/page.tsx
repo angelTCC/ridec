@@ -17,7 +17,9 @@ export default function EstadisticasPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [events, setEvents] = useState<{ id: number }[]>([]);
   const [oportunidades, setOportunidades] = useState<{ id: number }[]>([]);
-  const [blogPosts, setBlogPosts] = useState<{ id: number; published: boolean }[]>([]);
+  const [blogPosts, setBlogPosts] = useState<
+    { id: number; published: boolean }[]
+  >([]);
 
   useEffect(() => {
     (async () => {
@@ -37,11 +39,13 @@ export default function EstadisticasPage() {
   const pendingCount = users.filter((u) => u.status === "pending").length;
 
   return (
-    <RoleGuard allowed={["admin"]}>
+    <RoleGuard allowed={["ADMIN"]}>
       <div className="admin-header">
         <div>
           <h1 className="admin-header__title">Estadísticas</h1>
-          <p className="admin-header__subtitle">Resumen general de la plataforma</p>
+          <p className="admin-header__subtitle">
+            Resumen general de la plataforma
+          </p>
         </div>
       </div>
 
@@ -51,7 +55,9 @@ export default function EstadisticasPage() {
           <p className="admin-stat__label">Usuarios totales</p>
         </div>
         <div className="admin-stat">
-          <p className="admin-stat__number">{users.filter((u) => u.status === "approved").length}</p>
+          <p className="admin-stat__number">
+            {users.filter((u) => u.status === "approved").length}
+          </p>
           <p className="admin-stat__label">Aprobados</p>
         </div>
         <div className="admin-stat">
@@ -59,7 +65,9 @@ export default function EstadisticasPage() {
           <p className="admin-stat__label">Pendientes</p>
         </div>
         <div className="admin-stat">
-          <p className="admin-stat__number">{users.filter((u) => u.status === "rejected").length}</p>
+          <p className="admin-stat__number">
+            {users.filter((u) => u.status === "rejected").length}
+          </p>
           <p className="admin-stat__label">Rechazados</p>
         </div>
       </div>
@@ -74,25 +82,38 @@ export default function EstadisticasPage() {
           <p className="admin-stat__label">Oportunidades</p>
         </div>
         <div className="admin-stat">
-          <p className="admin-stat__number">{blogPosts.filter((b) => b.published).length}</p>
+          <p className="admin-stat__number">
+            {blogPosts.filter((b) => b.published).length}
+          </p>
           <p className="admin-stat__label">Blog publicados</p>
         </div>
         <div className="admin-stat">
-          <p className="admin-stat__number">{blogPosts.filter((b) => !b.published).length}</p>
+          <p className="admin-stat__number">
+            {blogPosts.filter((b) => !b.published).length}
+          </p>
           <p className="admin-stat__label">Blog borradores</p>
         </div>
       </div>
 
       {users.length > 0 && (
         <>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--fs-lg)", color: "var(--c-heading)", margin: "var(--sp-xl) 0 var(--sp-md)" }}>Por universidad</h2>
+          <h2
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontSize: "var(--fs-lg)",
+              color: "var(--c-heading)",
+              margin: "var(--sp-xl) 0 var(--sp-md)",
+            }}
+          >
+            Por universidad
+          </h2>
           <div className="admin-stats">
             {Object.entries(
               users.reduce<Record<string, number>>((acc, u) => {
                 const uni = u.university || "Sin especificar";
                 acc[uni] = (acc[uni] || 0) + 1;
                 return acc;
-              }, {})
+              }, {}),
             )
               .sort((a, b) => b[1] - a[1])
               .map(([uni, count]) => (

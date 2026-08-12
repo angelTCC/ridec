@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@/lib/useUser";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RoleGuard({
   allowed,
@@ -9,7 +9,7 @@ export default function RoleGuard({
   allowed: string[];
   children: React.ReactNode;
 }) {
-  const user = useUser();
+  const { user } = useAuth();
 
   if (!user) {
     return <p style={{ color: "var(--c-text-muted)" }}>Cargando...</p>;

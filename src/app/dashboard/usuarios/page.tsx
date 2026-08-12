@@ -24,7 +24,11 @@ export default function UsuariosPage() {
   }, []);
 
   async function updateUserStatus(id: number, status: string) {
-    await fetch(`/api/users/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
+    await fetch(`/api/users/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
     setUsers(users.map((u) => (u.id === id ? { ...u, status } : u)));
   }
 
@@ -35,11 +39,13 @@ export default function UsuariosPage() {
   }
 
   return (
-    <RoleGuard allowed={["admin"]}>
+    <RoleGuard allowed={["ADMIN"]}>
       <div className="admin-header">
         <div>
           <h1 className="admin-header__title">Gestión de Usuarios</h1>
-          <p className="admin-header__subtitle">Aprueba o rechaza registros de nuevos miembros</p>
+          <p className="admin-header__subtitle">
+            Aprueba o rechaza registros de nuevos miembros
+          </p>
         </div>
       </div>
 
@@ -63,26 +69,65 @@ export default function UsuariosPage() {
           <tbody>
             {users.map((u) => (
               <tr key={u.id}>
-                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>{u.name}</td>
+                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>
+                  {u.name}
+                </td>
                 <td>{u.email}</td>
                 <td>{u.university || "—"}</td>
-                <td><span className={`admin-badge admin-badge--${u.role}`}>{u.role}</span></td>
-                <td><span className={`admin-badge admin-badge--${u.status}`}>{u.status}</span></td>
+                <td>
+                  <span className={`admin-badge admin-badge--${u.role}`}>
+                    {u.role}
+                  </span>
+                </td>
+                <td>
+                  <span className={`admin-badge admin-badge--${u.status}`}>
+                    {u.status}
+                  </span>
+                </td>
                 <td>
                   <div className="admin-actions">
                     {u.status === "pending" && (
                       <>
-                        <button className="btn btn--primary btn--sm" onClick={() => updateUserStatus(u.id, "approved")}>Aprobar</button>
-                        <button className="btn btn--ghost btn--sm" style={{ color: "#f87171" }} onClick={() => updateUserStatus(u.id, "rejected")}>Rechazar</button>
+                        <button
+                          className="btn btn--primary btn--sm"
+                          onClick={() => updateUserStatus(u.id, "approved")}
+                        >
+                          Aprobar
+                        </button>
+                        <button
+                          className="btn btn--ghost btn--sm"
+                          style={{ color: "#f87171" }}
+                          onClick={() => updateUserStatus(u.id, "rejected")}
+                        >
+                          Rechazar
+                        </button>
                       </>
                     )}
                     {u.status === "approved" && (
-                      <button className="btn btn--ghost btn--sm" style={{ color: "#facc15" }} onClick={() => updateUserStatus(u.id, "pending")}>Revocar</button>
+                      <button
+                        className="btn btn--ghost btn--sm"
+                        style={{ color: "#facc15" }}
+                        onClick={() => updateUserStatus(u.id, "pending")}
+                      >
+                        Revocar
+                      </button>
                     )}
                     {u.status === "rejected" && (
-                      <button className="btn btn--ghost btn--sm" style={{ color: "#4ade80" }} onClick={() => updateUserStatus(u.id, "approved")}>Aprobar</button>
+                      <button
+                        className="btn btn--ghost btn--sm"
+                        style={{ color: "#4ade80" }}
+                        onClick={() => updateUserStatus(u.id, "approved")}
+                      >
+                        Aprobar
+                      </button>
                     )}
-                    <button className="btn btn--ghost btn--sm" style={{ color: "#f87171" }} onClick={() => deleteUser(u.id)}>Eliminar</button>
+                    <button
+                      className="btn btn--ghost btn--sm"
+                      style={{ color: "#f87171" }}
+                      onClick={() => deleteUser(u.id)}
+                    >
+                      Eliminar
+                    </button>
                   </div>
                 </td>
               </tr>

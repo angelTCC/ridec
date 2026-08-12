@@ -7,8 +7,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 import { loginSchema, type LoginFormData } from "@/schemas/auth.schema";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -37,6 +39,7 @@ export default function LoginForm() {
       }
 
       console.log("Login exitoso:", result);
+      router.push("/dashboard");
     } catch (error) {
       console.error("Error de conexión:", error);
     }

@@ -3,7 +3,11 @@
 import { useState, useEffect } from "react";
 import RoleGuard from "@/components/admin/RoleGuard";
 import AdminForm from "@/components/admin/AdminForm";
-import { opportunityFields, type AdminOportunidad, type FormData } from "@/components/admin/fields";
+import {
+  opportunityFields,
+  type AdminOportunidad,
+  type FormData,
+} from "@/components/admin/fields";
 
 export default function OportunidadesPage() {
   const [items, setItems] = useState<AdminOportunidad[]>([]);
@@ -22,7 +26,15 @@ export default function OportunidadesPage() {
 
   function openCreate() {
     setShowForm("create");
-    setFormValues({ title: "", description: "", deadline: "", type: "becas", externalLink: "", image: "", year: new Date().getFullYear() });
+    setFormValues({
+      title: "",
+      description: "",
+      deadline: "",
+      type: "becas",
+      externalLink: "",
+      image: "",
+      year: new Date().getFullYear(),
+    });
   }
 
   function openEdit(item: AdminOportunidad) {
@@ -36,9 +48,15 @@ export default function OportunidadesPage() {
 
   async function handleSave() {
     const isEdit = typeof showForm === "number";
-    const url = isEdit ? `/api/oportunidades/${showForm}` : "/api/oportunidades";
+    const url = isEdit
+      ? `/api/oportunidades/${showForm}`
+      : "/api/oportunidades";
     const method = isEdit ? "PUT" : "POST";
-    await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(formValues) });
+    await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formValues),
+    });
     setShowForm(null);
     setFormValues({});
     fetchData();
@@ -51,25 +69,34 @@ export default function OportunidadesPage() {
   }
 
   return (
-    <RoleGuard allowed={["admin", "colaborador"]}>
+    <RoleGuard allowed={["ADMIN", "USER"]}>
       <div className="admin-header">
         <div>
           <h1 className="admin-header__title">Gestión de Oportunidades</h1>
-          <p className="admin-header__subtitle">Administra las oportunidades publicadas</p>
+          <p className="admin-header__subtitle">
+            Administra las oportunidades publicadas
+          </p>
         </div>
         <div className="admin-header__actions">
-          <button className="btn btn--primary btn--sm" onClick={openCreate}>+ Crear oportunidad</button>
+          <button className="btn btn--primary btn--sm" onClick={openCreate}>
+            + Crear oportunidad
+          </button>
         </div>
       </div>
 
       {showForm !== null && (
         <AdminForm
-          title={showForm === "create" ? "Crear oportunidad" : "Editar oportunidad"}
+          title={
+            showForm === "create" ? "Crear oportunidad" : "Editar oportunidad"
+          }
           fields={opportunityFields}
           values={formValues}
           onChange={handleChange}
           onSave={handleSave}
-          onCancel={() => { setShowForm(null); setFormValues({}); }}
+          onCancel={() => {
+            setShowForm(null);
+            setFormValues({});
+          }}
         />
       )}
 
@@ -92,14 +119,38 @@ export default function OportunidadesPage() {
           <tbody>
             {items.map((o) => (
               <tr key={o.id}>
-                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>{o.title}</td>
-                <td><span className={`admin-badge admin-badge--${o.type === "becas" ? "approved" : o.type === "congresos" ? "admin" : o.type === "traslados" ? "colaborador" : "miembro"}`}>{o.type}</span></td>
+                <td style={{ fontWeight: 600, color: "var(--c-heading)" }}>
+                  {o.title}
+                </td>
+                <td>
+                  <span
+                    className={`admin-badge admin-badge--${o.type === "becas" ? "approved" : o.type === "congresos" ? "admin" : o.type === "traslados" ? "colaborador" : "miembro"}`}
+                  >
+                    {o.type}
+                  </span>
+                </td>
                 <td>{o.year}</td>
-                <td>{o.deadline ? new Date(o.deadline).toLocaleDateString("es-PE") : "—"}</td>
+                <td>
+                  {o.deadline
+                    ? new Date(o.deadline).toLocaleDateString("es-PE")
+                    : "—"}
+                </td>
                 <td>
                   <div className="admin-actions">
-                    <button className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }} onClick={() => openEdit(o)}>Editar</button>
-                    <button className="btn btn--ghost btn--sm" style={{ color: "#f87171" }} onClick={() => handleDelete(o.id)}>Eliminar</button>
+                    <button
+                      className="btn btn--ghost btn--sm"
+                      style={{ color: "var(--c-cyan)" }}
+                      onClick={() => openEdit(o)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn--ghost btn--sm"
+                      style={{ color: "#f87171" }}
+                      onClick={() => handleDelete(o.id)}
+                    >
+                      Eliminar
+                    </button>
                   </div>
                 </td>
               </tr>

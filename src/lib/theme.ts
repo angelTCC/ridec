@@ -1,11 +1,11 @@
 export const theme = {
   brand: {
-    primary: "emerald-600",
-    primaryHover: "emerald-700",
-    primaryLight: "emerald-50",
-    primaryText: "text-emerald-600",
-    primaryBg: "bg-emerald-600",
-    primaryBgHover: "hover:bg-emerald-700",
+    primary: "bg-[#0d2c4f]",
+    primaryHover: "bg-[#081c33]",
+    primaryLight: "bg-blue-50",
+    primaryText: "text-[#0d2c4f]",
+    primaryBg: "bg-[#0d2c4f]",
+    primaryBgHover: "hover:bg-[#081c33]",
   },
 
   dark: {

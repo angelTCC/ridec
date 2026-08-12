@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 import { loginSchema } from "@/schemas/auth.schema";
 import { prisma } from "@/lib/prisma";
 
+import { createToken } from "@/lib/auth";
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -53,8 +55,13 @@ export async function POST(request: Request) {
       );
     }
 
-    // 6. Login correcto
-    return NextResponse.json({
+    const token = await createToken({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
+
+    const response = NextResponse.json({
       message: "Login exitoso",
       user: {
         id: user.id,
@@ -63,6 +70,17 @@ export async function POST(request: Request) {
         role: user.role,
       },
     });
+
+    response.cookies.set("auth-token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    // 6. Login correcto
+    return response;
   } catch (error) {
     console.error(error);
 
