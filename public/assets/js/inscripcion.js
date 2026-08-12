@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function mostrarExito() {
     const container = document.querySelector('.form-container');
-    const originalContent = container.innerHTML;
 
     container.innerHTML = `
         <div style="text-align: center; padding: 2rem;">

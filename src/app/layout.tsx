@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
-import "../styles/globals.css";
-import "../styles/theme.css";
-import "../styles/components.css";
-import Providers from "../components/Providers";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import "@/styles/globals.css";
+import "@/styles/theme.css";
+import "@/styles/components.css";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -33,15 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${poppins.variable} ${inter.variable}`}>
-      <body style={{ fontFamily: "var(--font-body)" }}>
-        <Providers>
-          <Header />
-
-          {children}
-
-          <Footer />
-        </Providers>
-      </body>
+      <body style={{ fontFamily: "var(--font-body)" }}>{children}</body>
     </html>
   );
 }

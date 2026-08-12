@@ -1,11 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import HeroSection from "../components/sections/HeroSection";
-import StatsSection from "../components/sections/StatsSection";
-import FeaturesSection from "../components/sections/FeaturesSection";
-import EventsSection from "../components/sections/EventsSection";
-import OdsSection from "../components/sections/OdsSection";
-import JoinSection from "../components/sections/JoinSection";
-import ContactSection from "../components/sections/ContactSection";
+import HeroSection from "@/components/sections/HeroSection";
+import StatsSection from "@/components/sections/StatsSection";
+import FeaturesSection from "@/components/sections/FeaturesSection";
+import EventsSection from "@/components/sections/EventsSection";
+import OdsSection from "@/components/sections/OdsSection";
+import JoinSection from "@/components/sections/JoinSection";
+import ContactSection from "@/components/sections/ContactSection";
 
 export default async function Home() {
   const [stats, features, ods, eventos] = await Promise.all([
@@ -22,7 +22,11 @@ export default async function Home() {
   const eventsForSlider = eventos.map((e) => ({
     title: e.title,
     description: e.description,
-    date: e.date.toLocaleDateString("es-PE", { day: "numeric", month: "short", year: "numeric" }),
+    date: e.date.toLocaleDateString("es-PE", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }),
     category: e.category as "ec" | "gl",
     tagLabel: e.tagLabel,
     image: e.image,

@@ -16,6 +16,7 @@ export default function AuthStatus() {
 
   useEffect(() => {
     const stored = localStorage.getItem("ridec-user");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (stored) setUser(JSON.parse(stored));
   }, []);
 
@@ -40,17 +41,17 @@ export default function AuthStatus() {
         {user.role === "colaborador" && <span className="nav__user-badge nav__user-badge--collab">Colab</span>}
       </span>
       {user.role === "admin" && (
-        <Link href="/admin" className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }}>
+        <Link href="/dashboard/estadisticas" className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }}>
           Panel
         </Link>
       )}
       {user.role === "colaborador" && (
-        <Link href="/colaborador" className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }}>
+        <Link href="/dashboard/eventos" className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }}>
           Crear
         </Link>
       )}
       {user.role === "miembro" && (
-        <Link href="/perfil" className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }}>
+        <Link href="/dashboard/perfil" className="btn btn--ghost btn--sm" style={{ color: "var(--c-cyan)" }}>
           Mi perfil
         </Link>
       )}

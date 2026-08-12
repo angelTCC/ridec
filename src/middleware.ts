@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export function middleware(_request: NextRequest) {
+export function middleware() {
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/colaborador/:path*"],
+  matcher: ["/dashboard/:path*"],
 };

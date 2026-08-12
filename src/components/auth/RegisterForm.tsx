@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function RegisterForm() {
-  const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "", university: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

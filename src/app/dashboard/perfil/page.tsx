@@ -1,41 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-
-interface UserInfo {
-  role: string;
-  email: string;
-  name: string;
-}
+import { useUser } from "@/lib/useUser";
 
 export default function PerfilPage() {
-  const [user, setUser] = useState<UserInfo | null>(null);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("ridec-user");
-    if (stored) setUser(JSON.parse(stored));
-  }, []);
+  const user = useUser();
 
   if (!user) {
-    return (
-      <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--c-bg)" }}>
-        <p style={{ color: "var(--c-text-muted)" }}>Cargando...</p>
-      </main>
-    );
+    return <p style={{ color: "var(--c-text-muted)" }}>Cargando...</p>;
   }
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "var(--c-bg)",
-        padding: "2rem 1rem",
-      }}
-    >
+    <div style={{ display: "flex", justifyContent: "center", padding: "var(--sp-lg) 0" }}>
       <section className="auth-card" style={{ maxWidth: 480, width: "100%" }}>
         <h1 className="auth-card__title">Mi perfil</h1>
         <p className="auth-card__subtitle">Información de tu cuenta en RIdeC.</p>
@@ -61,6 +37,6 @@ export default function PerfilPage() {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

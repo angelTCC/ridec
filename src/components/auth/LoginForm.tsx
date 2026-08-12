@@ -18,9 +18,9 @@ export default function LoginForm() {
     e.preventDefault();
     const selected = ROLES.find((r) => r.value === role)!;
     localStorage.setItem("ridec-user", JSON.stringify({ role: selected.value, email: selected.email, name: selected.label }));
-    if (role === "admin") router.push("/admin");
-    else if (role === "colaborador") router.push("/colaborador");
-    else router.push("/perfil");
+    if (role === "admin") router.push("/dashboard/estadisticas");
+    else if (role === "colaborador") router.push("/dashboard/eventos");
+    else router.push("/dashboard");
   }
 
   return (
