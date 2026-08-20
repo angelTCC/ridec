@@ -1,0 +1,10 @@
+Cannot update a component (`Router`) while rendering a different component (`PerfilPage`). To locate the bad setState() call inside `PerfilPage`, follow the stack trace as described in https://react.dev/link/setstate-in-render
+src/app/perfil/page.tsx (20:12) @ PerfilPage
+
+
+  18 |
+  19 |   if (!session) {
+> 20 |     router.push("/login");
+     |            ^
+  21 |     return null;
+  22 |   }
